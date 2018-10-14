@@ -16,10 +16,11 @@ export class InputProcessor{
 	}
 
 	get IsValid():boolean{
-		let r = new RegExp("\\b(^[A-Za-z]\\w\\w*)\\b");
+		let r = /\b[A-Za-z]\w*\b/;
 		let text = this.input;
-		let res = r.exec(text);
-		return res == null ? false : res[1] == text;
+		let res = text.match(r);
+		
+		return res == null ? false : res[0] == text;
 	}
 	private processInput(inp : string):string{
 		if(inp.toLowerCase().endsWith("component")){

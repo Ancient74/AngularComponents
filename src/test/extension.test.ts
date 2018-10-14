@@ -21,6 +21,10 @@ suite("Extension Tests", function () {
 				assert.equal(inputProc.IsValid,true);
         assert.equal(inputProc.componentName,"ValidNameComponent");
 		});
+		test("Input valid test2",function(){
+			let inputProc = new InputProcessor("p");
+				assert.equal(inputProc.IsValid,true);
+		});
 		test("Input invalid test",function(){
 			let inputProc = new InputProcessor("invalid name");
 				assert.equal(inputProc.IsValid,false);
@@ -33,6 +37,7 @@ suite("Extension Tests", function () {
 			let inputProc = new InputProcessor("3invalid");
 				assert.equal(inputProc.IsValid,false);
 		});
+		
 		test("File names test", function() {
 			let inputProc = new InputProcessor("ValidName");
 			assert.equal(inputProc.fileNameEquivalent(FileTypes.css),"validname.component.css");
