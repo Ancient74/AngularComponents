@@ -1,18 +1,27 @@
 import * as fs from "fs";
 import { InputProcessor, FileTypes } from "./InputProcessor";
 export class ComponentCreator{
-	processor : InputProcessor = new InputProcessor();
-	constructor(public componentName : string){
+	private processor : InputProcessor;
+	public set componentName(value : string){
+		this.processor.input = value;
+	}
+	public get componentName(){
+		return this.processor.componentName;
+	}
+	constructor(_componentName : string){
+		this.processor = new InputProcessor(_componentName);
+	}
+	fileNameEquivalent(type : FileTypes | string){
+		return this.processor.fileNameEquivalent(type);
 	}
 	createComponent(path : string, withDir : boolean=false){
 		
-		this.processor.input = this.componentName;
 		if(!this.processor.IsValid){
 			throw new Error("Bad input");
 		}
 
 		if(withDir){
-			path = path +"/"+ this.processor.DirName;
+			path = path +"/"+ this.processor.componentName;
 			fs.mkdirSync(path);
 		}
 		for(let type of Object.keys(FileTypes)){
@@ -36,7 +45,7 @@ export class ComponentCreator{
 		data += "\tstyleUrls:['"+this.processor.fileNameEquivalent(FileTypes.css)+"'],\n";
 		data += "\tmoduleId: module.id\n";
 		data += "})\n";
-		data += "export class "+this.processor.input + "Component{\n";
+		data += "export class "+this.processor.componentName + "{\n";
 		data += "\tconstructor(){\n\t}\n}";
 		return data;
 	}

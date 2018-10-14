@@ -11,22 +11,15 @@ export class InputProcessor{
 	get input(){
 		return this._input;
 	}
-	constructor(){
+	constructor(inp : string){
+		this.input = inp;
 	}
 
 	get IsValid():boolean{
-		let r = new RegExp("\\b(\\w*\\w\\w*)\\b");
-		let res = r.exec(this.input);
-		if(res===null){
-			return false;
-		}
-		else if(res.length>2)
-		{
-			return false;
-		}
-		else{
-			return true;
-		}
+		let r = new RegExp("\\b(^[A-Za-z]\\w\\w*)\\b");
+		let text = this.input;
+		let res = r.exec(text);
+		return res == null ? false : res[1] == text;
 	}
 	private processInput(inp : string):string{
 		if(inp.toLowerCase().endsWith("component")){
@@ -34,8 +27,8 @@ export class InputProcessor{
 		}
 		return inp;
 	}
-	get DirName(){
-		return this.input.charAt(0) + this.input.slice(1) + "Component";
+	get componentName(){
+		return this.input.charAt(0).toUpperCase() + this.input.slice(1) + "Component";
 	}
 
 	fileNameEquivalent(type : FileTypes | string):string{
