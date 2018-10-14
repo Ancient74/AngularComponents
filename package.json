@@ -3,7 +3,7 @@
     "displayName": "AngularComponents",
     "description": "Fast components creating for Angular",
     "version": "1.0.0",
-    "publisher": "YuraRuban",
+    "publisher": "yuraruban",
     "engines": {
         "vscode": "^1.27.2"
     },
@@ -12,7 +12,11 @@
     ],
     "activationEvents": [
 		"onCommand:angularComponent.createComponent"
-    ],
+	],
+	"repository": {
+		"url": "https://yuraruban2011@dev.azure.com/yuraruban2011/Angular%20Components/_git/Angular%20Components",
+		"type": "git"
+	},
     "main": "./out/extension",
     "contributes": {
         "commands": [
