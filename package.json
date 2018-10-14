@@ -17,6 +17,7 @@
 		"url": "https://yuraruban2011@dev.azure.com/yuraruban2011/Angular%20Components/_git/Angular%20Components",
 		"type": "git"
 	},
+	"icon": "images/logo.png",
     "main": "./out/extension",
     "contributes": {
         "commands": [
