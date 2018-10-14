@@ -2,25 +2,46 @@
     "name": "angularcomponents",
     "displayName": "AngularComponents",
     "description": "Fast components creating for Angular",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "publisher": "YuraRuban",
     "engines": {
-        "vscode": "^1.28.0"
+        "vscode": "^1.27.2"
     },
     "categories": [
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+		"onCommand:angularComponent.createComponent"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
-            {
-                "command": "extension.sayHello",
-                "title": "Hello World"
-            }
-        ]
+			{
+				"command": "angularComponent.createComponent",
+				"title": "New Angular Component",
+				"category": "angularComponent"
+			}
+		],
+		"configuration":[
+			{
+				"title": "Angular Component",
+				"properties": {
+					"angularComponent.allowDir":{
+						"type":"boolean",
+						"default":true,
+						"description": "Create dir when creating component"
+					}
+				}
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "angularComponent.createComponent",
+					"group": "navigation"
+				}
+			]
+		}
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -35,5 +56,5 @@
         "tslint": "^5.8.0",
         "@types/node": "^8.10.25",
         "@types/mocha": "^2.2.42"
-    }
+	}
 }
