@@ -6,7 +6,7 @@ export enum FileTypes{
 export class InputProcessor{
 	private _input : string = "";
 	set input(value:string){
-		this._input = this.processInput(value.trim());
+		this._input = this.processInput(value);
 	}
 	get input(){
 		return this._input;
@@ -15,7 +15,7 @@ export class InputProcessor{
 		this.input = inp;
 	}
 
-	get IsValid():boolean{
+	public IsValid():boolean{
 		let r = /\b[A-Za-z]\w*\b/;
 		let text = this.input;
 		let res = text.match(r);
@@ -23,6 +23,7 @@ export class InputProcessor{
 		return res == null ? false : res[0] == text;
 	}
 	private processInput(inp : string):string{
+		inp = inp.trim();
 		if(inp.toLowerCase().endsWith("component")){
 			return inp.substring(0,inp.length-9);
 		}
@@ -30,6 +31,14 @@ export class InputProcessor{
 	}
 	get componentName(){
 		return this.input.charAt(0).toUpperCase() + this.input.slice(1) + "Component";
+	}
+
+	get selectorName(){
+		let res = this.input.split(/(?=[A-Z])/);
+		if(res===null){
+			return this.input.toLowerCase();
+		}
+		return res.join("-").toLowerCase();
 	}
 
 	fileNameEquivalent(type : FileTypes | string):string{

@@ -47,5 +47,21 @@ suite("Extension Tests", function () {
 	test("Dir name test", function() {
 		let inputProc = new InputProcessor("validname");
 		assert.equal(inputProc.componentName,"ValidnameComponent");
-});
+	});
+	test("selector name test", function() {
+		let inputProc = new InputProcessor("ValidName");
+		assert.equal(inputProc.selectorName,"valid-name");
+	});
+	test("selector name test2", function() {
+		let inputProc = new InputProcessor("Validname");
+		assert.equal(inputProc.selectorName,"validname");
+	});
+	test("selector name test3", function() {
+		let inputProc = new InputProcessor("Valid3name");
+		assert.equal(inputProc.selectorName,"valid3name");
+	});
+	test("selector name test4", function() {
+		let inputProc = new InputProcessor("V");
+		assert.equal(inputProc.selectorName,"v");
+	});
 });

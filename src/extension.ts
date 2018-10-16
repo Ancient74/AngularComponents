@@ -1,10 +1,10 @@
 'use strict';
 import * as vscode from 'vscode';
-import {dirname, join} from 'path'
 import { ComponentCreator } from './componentCreator';
 import { FileTypes } from './InputProcessor';
+import { PathProcessor } from './pathProcessor';
 
-async function createComponent(fileUri : any){
+async function createComponent(fileUri : vscode.Uri | undefined){
 	let input : string = "";
 
 	
@@ -13,38 +13,21 @@ async function createComponent(fileUri : any){
 	if(!input || input.trim()===""){//if input is empty => return
 		return;
 	}
+	let pathProcessor = new PathProcessor(vscode.window.activeTextEditor,vscode.workspace.workspaceFolders);
+	let validPath = pathProcessor.getValidPath(fileUri);
 
-	if(fileUri!==undefined){//get file path from explorer
-		fileUri = fileUri.path;
-		fileUri = fileUri.substring(1,fileUri.length);
-	}
-	else{//get file path from command line
-		if(vscode.workspace.workspaceFolders===undefined){
-			return;
-		}
-		if(vscode.window.activeTextEditor===undefined){
-			fileUri = vscode.workspace.workspaceFolders[0].uri.fsPath;//path to root folder
-		}
-		else{
-			let activePath =dirname(vscode.window.activeTextEditor.document.fileName);//active text editor folder
-			if(
-				fileUri = vscode.workspace.workspaceFolders[0].uri.fsPath !== activePath){
-			fileUri = join(activePath,"..");//if it is not root folder - create component at parent dir
-				}
-				else{
-					fileUri = activePath;// create component at active text editor dir
-				}
-		}
+	if(validPath === undefined){
+		return;
 	}
 
 	let creator = new ComponentCreator(input);
 	try{
 		let allowDir =	!!vscode.workspace.getConfiguration("angularComponent").get("allowDir");
-		creator.createComponent(fileUri,allowDir);
-		let createdComponent = fileUri+"/";
+		creator.createComponent(validPath,allowDir);
+		let createdComponent = validPath+"/";
 		let TsFile = creator.fileNameEquivalent(FileTypes.ts);
 		if(allowDir){
-			createdComponent += creator.componentName+"/"+TsFile;
+			createdComponent += creator.dirName+"/"+TsFile;
 		}
 		else{
 			createdComponent += TsFile;

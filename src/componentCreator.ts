@@ -1,27 +1,35 @@
 import * as fs from "fs";
 import { InputProcessor, FileTypes } from "./InputProcessor";
+import { ComponentContentBuilder } from "./componentContentBuilder/componentContentBuilder";
 export class ComponentCreator{
+
 	private processor : InputProcessor;
+	private componentBuilder : ComponentContentBuilder;
+	
 	public set componentName(value : string){
 		this.processor.input = value;
 	}
 	public get componentName(){
 		return this.processor.componentName;
 	}
+	public get dirName(){
+		return this.processor.input.toLowerCase();
+	}
 	constructor(_componentName : string){
 		this.processor = new InputProcessor(_componentName);
+		this.componentBuilder = new ComponentContentBuilder();
 	}
 	fileNameEquivalent(type : FileTypes | string){
 		return this.processor.fileNameEquivalent(type);
 	}
 	createComponent(path : string, withDir : boolean=false){
 		
-		if(!this.processor.IsValid){
+		if(!this.processor.IsValid()){
 			throw new Error("Bad input");
 		}
 
 		if(withDir){
-			path = path +"/"+ this.processor.componentName;
+			path = path +"/"+ this.dirName;
 			fs.mkdirSync(path);
 		}
 		for(let type of Object.keys(FileTypes)){
@@ -29,7 +37,7 @@ export class ComponentCreator{
 			if(type === "ts"){
 				data = this.getTsData();
 			}
-			let filename = path+"/"+this.processor.fileNameEquivalent(type);
+			let filename = path+"/"+this.fileNameEquivalent(type);
 			let fd = fs.openSync(filename,"a");
 			fs.appendFileSync(filename,data);
 			fs.closeSync(fd);
@@ -38,15 +46,22 @@ export class ComponentCreator{
 	}
 
 	private getTsData(): string{
-		let data : string = "";
-		data += "import { Component } from '@angular/core';\n\n";
-		data += "@Component({\n";
-		data += "\ttemplateUrl:'"+this.processor.fileNameEquivalent(FileTypes.html)+"',\n";
-		data += "\tstyleUrls:['"+this.processor.fileNameEquivalent(FileTypes.css)+"'],\n";
-		data += "\tmoduleId: module.id\n";
-		data += "})\n";
-		data += "export class "+this.processor.componentName + "{\n";
-		data += "\tconstructor(){\n\t}\n}";
-		return data;
+
+		return this.componentBuilder
+		.imports()
+			.import("Component")
+			.from("@angular/core")
+		.componentOuter()
+			.setTemplateUrl(this.processor.fileNameEquivalent(FileTypes.html))
+			.setSelector(this.processor.selectorName)
+			.setModuleId("module.id")
+			.addStyleUrl(this.processor.fileNameEquivalent(FileTypes.css))
+			.build()
+		.componentInner()
+			.setIsExport(true)
+			.setClassName(this.processor.componentName)
+			.setWithConstructor(true)
+			.build()
+		.build();
 	}
 }
