@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { InputProcessor, FileTypes } from "./InputProcessor";
+import { InputProcessor, FileTypes } from "./inputProcessor";
 import { ComponentContentBuilder } from "./componentContentBuilder/componentContentBuilder";
 export class ComponentCreator{
 
