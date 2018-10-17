@@ -25,13 +25,15 @@ export class ComponentContentBuilder{
 		let frm = this._imports.map(x=>x._lineFrm).filter((v,i,a)=>{
 			return a.indexOf(v) == i;
 		})//get distincted froms values
-		for(let fr of frm){
+		for(let fr of frm){//all froms
 			code += "import { ";
-			for(let imp of this._imports.filter(x=>x._lineFrm==fr)){
-				if(!imp.isValid()){
-					throw new Error("Building Error, invalid imports");
+				for(let line of this._imports.filter(x=>x._lineFrm==fr)){//get all lines with that from
+					for(let imp of line._lineImp){//import all lines from fr
+					if(!line.isValid()){
+						throw new Error("Building Error, invalid imports");
+					}
+					code+= imp + ", "; 
 				}
-				code+= imp._lineImp + ", "; 
 			}
 			code = code.substring(0,code.length-2) + " } from '" + fr +"';\n";
 		}
@@ -145,14 +147,14 @@ class ComponentOuterBuilder{
 class Importer{
 	constructor(public builder : ComponentContentBuilder){
 	}
-	public _lineImp : string = "";
+	public _lineImp : string[] = [];
 	public _lineFrm : string = "";
 
 	private imp : boolean = false;
 	private frm : boolean = false;
 
 	public import(imp : string){
-		this._lineImp=imp;
+		this._lineImp.push(imp);
 		this.imp = true;
 		return this;
 	}
