@@ -5,6 +5,7 @@ export enum FileTypes{
 }
 export class InputProcessor{
 	private _input : string = "";
+	public defaultSelectorPrefix = "app";
 	set input(value:string){
 		this._input = this.processInput(value);
 	}
@@ -38,7 +39,7 @@ export class InputProcessor{
 		if(res===null){
 			return this.input.toLowerCase();
 		}
-		return res.join("-").toLowerCase();
+		return this.defaultSelectorPrefix + "-" + res.join("-").toLowerCase();
 	}
 
 	fileNameEquivalent(type : FileTypes | string):string{

@@ -32,7 +32,7 @@ export class ComponentContentBuilder{
 		for(let fr of frm){//all froms
 			code += "import { ";
 				for(let line of this._imports.filter(x=>x._lineFrm==fr)){//get all lines with that from
-					for(let imp of line._lineImp){//import all lines from fr
+					for(let imp of line._lineImp.filter((v,i,a)=>a.indexOf(v)===i)){//distinct and import all lines from fr 
 					if(!line.isValid()){
 						throw new Error("Building Error, invalid imports");
 					}
