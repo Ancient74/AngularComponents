@@ -2,7 +2,7 @@
 	"name": "angularcomponents",
 	"displayName": "Angular Components",
 	"description": "Fast components creating for Angular",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"publisher": "yuraruban",
 	"engines": {
 		"vscode": "^1.27.2"
