@@ -22,11 +22,13 @@ export class ComponentCreator{
 	fileNameEquivalent(type : FileTypes | string){
 		return this.processor.fileNameEquivalent(type);
 	}
-	createComponent(path : string, withDir : boolean=false){
+	createComponent(path : string, withDir : boolean=false, prefix : string = "app"){
 		
 		if(!this.processor.IsValid()){
 			throw new Error("Bad input");
 		}
+		
+		this.processor.defaultSelectorPrefix = prefix;
 
 		if(withDir){
 			path = path +"/"+ this.dirName;

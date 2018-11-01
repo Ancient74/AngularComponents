@@ -38,7 +38,13 @@
 						"type": "boolean",
 						"default": true,
 						"description": "Create dir when creating component"
+					},
+					"angularComponent.selectorPrefix":{
+						"type":"string",
+						"default":"app",
+						"description": "component`s selector prefix"
 					}
+					
 				}
 			}
 		],

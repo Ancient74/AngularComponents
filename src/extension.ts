@@ -23,7 +23,8 @@ async function createComponent(fileUri : vscode.Uri | undefined){
 	let creator = new ComponentCreator(input);
 	try{
 		let allowDir =	!!vscode.workspace.getConfiguration("angularComponent").get("allowDir");
-		creator.createComponent(validPath,allowDir);
+		let prefix = vscode.workspace.getConfiguration("angularComponent").get("selectorPrefix") as string;
+		creator.createComponent(validPath,allowDir,prefix);
 		let createdComponent = validPath+"/";
 		let TsFile = creator.fileNameEquivalent(FileTypes.ts);
 		if(allowDir){
