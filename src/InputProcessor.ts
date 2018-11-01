@@ -43,6 +43,10 @@ export class InputProcessor{
 	}
 
 	fileNameEquivalent(type : FileTypes | string):string{
-		return this.input.toLowerCase() + ".component."+type;
+		let res = this.input.split(/(?=[A-Z])/);
+		if(res===null){
+			return this.input.toLowerCase();
+		}
+		return res.join(".").toLowerCase() + ".component."+type;
 	}
 }
