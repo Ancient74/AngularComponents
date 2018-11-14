@@ -49,4 +49,11 @@ export class InputProcessor{
 		}
 		return res.join(".").toLowerCase() + ".component."+type;
 	}
+	get dirName(){
+		let res = this.input.split(/(?=[A-Z])/);
+		if(res===null){
+			return this.input.toLowerCase();
+		}
+		return res.join("-").toLowerCase();
+	}
 }

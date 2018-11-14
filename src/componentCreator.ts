@@ -13,7 +13,7 @@ export class ComponentCreator{
 		return this.processor.componentName;
 	}
 	public get dirName(){
-		return this.processor.input.toLowerCase();
+		return this.processor.dirName;
 	}
 	constructor(_componentName : string){
 		this.processor = new InputProcessor(_componentName);
